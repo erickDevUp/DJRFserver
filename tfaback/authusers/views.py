@@ -47,3 +47,13 @@ class IniciarSesion(APIView):
             'token': token.key
         }, status=status.HTTP_200_OK)
     
+class Logout(APIView):
+    permission_classes = [AllowAny]
+    def post(self, request, format=None):
+        token = request.data.get('token')
+        try:
+            token = Token.objects.get(key=token)
+        except Token.DoesNotExist:
+            return Response({'error': 'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
+        token.delete()
+        return Response({'message': 'Logout successful'}, status=status.HTTP_200_OK)

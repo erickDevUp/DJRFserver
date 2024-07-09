@@ -1,13 +1,15 @@
 from rest_framework import viewsets
 from.models import Entry
 from.serializers import EntrySerializer
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 
 class GestionarActivos(viewsets.ModelViewSet):
     queryset = Entry.objects.all()
     serializer_class = EntrySerializer
-    permission_classes = [AllowAny]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
 
     def list(self, request, *args, **kwargs):
